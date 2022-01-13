@@ -1,0 +1,8 @@
+mysql:
+
+mydb
+roykimm
+12345
+
+host: gobella.kr
+port: 3306
