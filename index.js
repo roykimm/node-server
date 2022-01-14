@@ -35,8 +35,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
 
-app.use("/test", (req, res) => {
-  res.status(200).send("Received request1");
+app.use("/bella", (req, res) => {
+  res.status(200).send("bella");
 });
 
 app.listen(process.env.PORT | 8080, () => {
