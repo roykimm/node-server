@@ -1,24 +1,44 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const bodyParser = require('body-parser');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
-console.log(process.env.NODE_ENV);
 if((process.env.NODE_ENV).trim() == 'production'){
-    console.log(11)
     require('dotenv').config({path : path.join(__dirname, '.env.production')});
 } else {
-    console.log(22)
     require('dotenv').config({path : path.join(__dirname, '.env.development')});
 }
+const usersRoutes = require("./routes/users.route");
+const postsRoutes = require("./routes/posts.route");
 
-console.log(process.env.name)
-console.log(process.env.password)
+app.use(bodyParser.json());
+
+// swagger
+const swaggerOption = {
+  swaggerDefinition : (swaggerJsdoc.Options = {
+    info : {
+      title : "my-posts",
+      description : "API Documentation",
+      contact : {
+        name : "Developer",
+      },
+      servers : ["http://localhost:8080"],
+    },
+  }),
+  apis : ["index.js", "./routes/*.js"]
+}
+const swaggerDocs = swaggerJsdoc(swaggerOption);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+app.use("/users", usersRoutes);
+app.use("/posts", postsRoutes);
 
 app.use("/test", (req, res) => {
-  console.log("received request");
   res.status(200).send("Received request1");
 });
 
-app.listen(8080, () => {
-  console.log(`server is running on port ${8080}`);
+app.listen(process.env.PORT | 8080, () => {
+  console.log(`server is running on port ${process.env.PORT | 8080}`);
 });
