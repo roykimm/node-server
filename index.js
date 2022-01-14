@@ -24,7 +24,7 @@ const swaggerOption = {
       contact : {
         name : "Developer",
       },
-      servers : ["http://localhost:8080"],
+      servers : [`${process.env.HOST}:${process.env.PORT}`],
     },
   }),
   apis : ["index.js", "./routes/*.js"]
